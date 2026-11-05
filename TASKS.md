@@ -106,9 +106,9 @@ These are recorded as completed in the existing handover. Do not rebuild them. V
 - [x] **I5-T5** Provision one concise LoopClose dashboard: request rate, latency (p95), status code distribution and total request counts (`monitoring/grafana/dashboards/loopclose-app.json`).
 - [x] **I5-T6** Persist Prometheus and Grafana state with named volumes (`prometheus_data`, `grafana_data`); set bounded Prometheus retention (default 7 days).
 - [x] **I5-T7** Bind host ports 9090 and 3000 to `127.0.0.1` only. Document Windows SSH tunnel commands for access.
-- [ ] **I5-T8** Verify Prometheus target is UP and Grafana dashboard displays real requests to EC2 app once live instance is connected. No exporters.
+- [x] **I5-T8** Verify Prometheus target is UP and Grafana dashboard displays real requests to EC2 app once live instance is connected. No exporters.
 
-**Acceptance:** Prometheus and Grafana configs and dashboards provisioned; `/metrics` verified in automated tests. No Node Exporter, cAdvisor, PostgreSQL Exporter or any other exporter is installed.
+**Acceptance:** Prometheus and Grafana configs and dashboards provisioned; `/metrics` verified in automated tests. Real requests appear in Prometheus target UP and Grafana dashboard. No Node Exporter, cAdvisor, PostgreSQL Exporter or any other exporter is installed.
 
 ### INFRA-6 — OWASP ZAP and final security validation
 
@@ -119,7 +119,7 @@ These are recorded as completed in the existing handover. Do not rebuild them. V
 - [x] **I6-T5** Run full regression tests after instrumentation/config changes; confirm Units 1–6 still work (74 passing tests).
 - [x] **I6-T6** Update `memory.md` with exact final architecture, versions, test count, workflow run, deployment URL, metrics URLs/tunnel, ZAP report status, remaining limitations and manual actions.
 
-**Acceptance:** security jobs run and report accurately; ZAP baseline configured; app and monitoring ready for deployment; existing product behaviour 100% intact.
+**Acceptance:** security jobs run and report accurately; ZAP baseline completed; app and monitoring are demonstrably live; existing product behaviour 100% intact.
 
 ## 5. Required human inputs / secrets
 
@@ -142,14 +142,14 @@ The SSH ingress approach must be explicitly approved and documented. If automate
 
 ## 6. Final demonstration checklist
 
-- [ ] Show the LoopClose app running on the EC2 public URL.
-- [ ] Show GitHub Actions jobs: Gitleaks, CodeQL, Ruff/pytest, pip-audit, Docker build, Trivy, SCP/Ansible deployment, health check and ZAP baseline.
-- [ ] Show Docker Compose services on EC2: app, db, nginx, prometheus and grafana.
-- [ ] Show PostgreSQL is private and uses a persistent named volume.
-- [ ] Open Prometheus via SSH tunnel and show `loopclose-app` target UP.
-- [ ] Open Grafana via SSH tunnel and show live application request/latency/status metrics.
-- [ ] Demonstrate a new Git push updates the deployed commit SHA.
-- [ ] Confirm the original Units 1–6 product features still work.
+- [x] Show the LoopClose app running on the EC2 public URL.
+- [x] Show GitHub Actions jobs: Gitleaks, CodeQL, Ruff/pytest, pip-audit, Docker build, Trivy, SCP/Ansible deployment, health check and ZAP baseline.
+- [x] Show Docker Compose services on EC2: app, db, nginx, prometheus and grafana.
+- [x] Show PostgreSQL is private and uses a persistent named volume.
+- [x] Open Prometheus via SSH tunnel and show `loopclose-app` target UP.
+- [x] Open Grafana via SSH tunnel and show live application request/latency/status metrics.
+- [x] Demonstrate a new Git push updates the deployed commit SHA.
+- [x] Confirm the original Units 1–6 product features still work.
 
 ## 7. Explicitly forbidden scope creep
 

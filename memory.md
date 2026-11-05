@@ -15,19 +15,19 @@
 ## 1. CURRENT STATE SNAPSHOT (living section)
 
 ```text
-Last updated:            2026-11-05
+Last updated:            2026-11-06
 Last completed product:  Original Unit 6 (KB + Level A linking + catch-up brief)
 Product Units complete:  1, 2, 3, 4, 5, 6
 Original Units skipped:  7 (Nudge Center), 8 (separate feature polish pass), 9 (Level B vector RAG)
-Current workstream:      Infrastructure / DevSecOps migration (Modules 1–4 complete)
+Current workstream:      Infrastructure / DevSecOps migration (Modules 1–4 complete & verified live)
 Repo runnable locally:   Yes (verified with Python 3.12.2 and pytest)
 Last known tests:        74 passed in 2.58s (verified: 100% passing)
-Current pipeline:        DevSecOps CI/CD pipeline in .github/workflows/ci-cd.yml (Gitleaks, CodeQL, Ruff/pytest, pip-audit, Docker build, Trivy scan, image TAR export, SCP transfer, Ansible deploy, healthcheck verification, OWASP ZAP baseline scan)
-Current deployment:      EC2 Ansible provisioning and deployment automated; ready for remote EC2 run
-EC2 status:              Workflow and playbooks complete; awaiting human AWS credentials and host setup
-Monitoring status:       Prometheus + Grafana configured and provisioned; FastAPI /metrics endpoint active and tested
-Ansible status:          Complete (ansible.cfg, inventory.ini, provision.yml, deploy.yml, site.yml, compose.env.j2)
-Next task:               HUMAN SETUP — configure AWS EC2 host, security groups, and GitHub repository secrets
+Current pipeline:        DevSecOps CI/CD pipeline verified green on GitHub Actions (Gitleaks, CodeQL, Ruff/pytest, pip-audit, Docker build, Trivy scan, image TAR export, SCP transfer, Ansible deploy, healthcheck verification, OWASP ZAP baseline scan)
+Current deployment:      Live on AWS EC2 Ubuntu instance via Docker Compose (app, db, nginx, prometheus, grafana)
+EC2 status:              LIVE and VERIFIED (http://<EC2_PUBLIC_IP>/ returned 200, DB ok, commit matches git SHA)
+Monitoring status:       Prometheus target loopclose-app is UP; Grafana dashboard LoopClose Application Metrics is live and rendering request metrics
+Ansible status:          Complete and verified (ansible.cfg, inventory.ini, provision.yml, deploy.yml, site.yml, compose.env.j2)
+Next task:               Project complete! Optional: restrict EC2 Security Group port 22 to operator IP for post-deployment hardening.
 ```
 
 Scope is authoritative in `TASKS.md`: preserve the existing Units 1–6 product; do not implement original Units 7, 8 or 9. Complete the new infrastructure workstream instead.
@@ -776,3 +776,41 @@ GitHub Actions → Gitleaks/CodeQL/Ruff/pytest/pip-audit → Docker build → Tr
 
 **Next pass should:**
 - Human operator launches EC2 instance, configures GitHub Actions secrets, and triggers initial deployment to verify live EC2 hosting and SSH tunnels.
+
+### Pass 12 — 2026-11-06: Live AWS EC2 deployment & DevSecOps verification
+
+- **Date/time (UTC):** 2026-11-05T21:15:00Z
+- **Agent/tool:** Antigravity — Gemini 3.8 Flash
+- **Goal of this pass:** Guide the human operator through live AWS EC2 host creation, SSH known_hosts verification, GitHub Actions secret configuration, host Docker provisioning, git push to main, end-to-end CI/CD workflow execution, and live application & Grafana dashboard verification.
+- **Status:** complete
+
+**Done (verified):**
+- EC2 Ubuntu host launched with 20 GB gp3 storage and public IPv4.
+- Host key fingerprint extracted via `ssh-keyscan -H` and added to GitHub repository secrets alongside SSH private key, DB password, Grafana password, Gemini API key, and deploy path.
+- Provisioned Docker Engine and Docker Compose plugin on EC2 host; verified `docker compose version`.
+- Adjusted Security Group SSH access (port 22) for dynamic GitHub-hosted runner egress.
+- GitHub Actions pipeline `LoopClose DevSecOps CI-CD` ran on push to `main` and succeeded:
+  - Gitleaks secret scan: passed
+  - CodeQL SAST scan: passed
+  - Ruff lint & format check: passed
+  - Pytest suite (74 tests): passed
+  - pip-audit dependency vulnerability audit: passed
+  - Docker build & Trivy container vulnerability scan: passed
+  - Docker save TAR archive export and artifact handoff: passed (no container registry used)
+  - SCP direct transfer of image TAR to EC2: passed
+  - Ansible `deploy.yml` execution: loaded image, rendered `.env` (0600), started Docker Compose stack (`app`, `db`, `nginx`, `prometheus`, `grafana`), verified `/health` commit: passed
+  - OWASP ZAP baseline scan: executed and generated report
+- Verified live web application at `http://<EC2_PUBLIC_IP>/`: 200 OK.
+- Verified live production healthcheck at `http://<EC2_PUBLIC_IP>/health`: returned status "ok", db "ok", commit matching pushed git SHA.
+- Verified loopback SSH tunnel (`ssh -L 3000:127.0.0.1:3000 -L 9090:127.0.0.1:9090`):
+  - Prometheus at `http://localhost:9090`: target `loopclose-app` is UP.
+  - Grafana at `http://localhost:3000`: `LoopClose Application Metrics` dashboard displaying live request rate, status code distribution, and latency.
+- Verified all demonstration criteria in `TASKS.md`.
+
+**Files created or modified:**
+- `TASKS.md` (updated all checklist items to complete)
+- `memory.md` (updated current snapshot and appended Pass 12)
+
+**Next steps for human operator:**
+- Keep your EC2 instance running for demo/evaluation.
+- (Optional) Restrict EC2 Security Group port 22 back to "My IP" when not triggering CI/CD runs for enhanced SSH security.
