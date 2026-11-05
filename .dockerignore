@@ -1,0 +1,26 @@
+# Docker build context — exclude heavyweight or secret files
+.git/
+.venv/
+venv/
+.env*
+*.env
+*.pem
+*.key
+logs/
+*.tar
+*.tar.gz
+ops/
+monitoring/
+nginx/
+*.db
+*.db-shm
+*.db-wal
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+tests/
+README.md
+*.md

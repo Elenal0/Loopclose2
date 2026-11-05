@@ -1,0 +1,135 @@
+---
+- name: Deploy LoopClose application image and compose stack
+  hosts: ec2
+  become: false
+  gather_facts: false
+
+  vars:
+    deploy_path: "{{ lookup('env', 'EC2_DEPLOY_PATH') | default('/opt/loopclose', true) }}"
+    image_tag: "{{ lookup('env', 'IMAGE_TAG') | default('latest', true) }}"
+    tar_filename: "{{ lookup('env', 'TAR_FILENAME') | default('loopclose_' ~ image_tag ~ '.tar.gz', true) }}"
+    db_password: "{{ lookup('env', 'DB_PASSWORD') }}"
+    grafana_admin_password: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') }}"
+    gemini_api_key: "{{ lookup('env', 'GEMINI_API_KEY') | default('', true) }}"
+    gemini_model: "{{ lookup('env', 'GEMINI_MODEL') | default('gemini-1.5-flash', true) }}"
+    db_name: "{{ lookup('env', 'DB_NAME') | default('loopclose', true) }}"
+    db_user: "{{ lookup('env', 'DB_USER') | default('loopclose', true) }}"
+    grafana_admin_user: "{{ lookup('env', 'GRAFANA_ADMIN_USER') | default('admin', true) }}"
+    prometheus_retention: "{{ lookup('env', 'PROMETHEUS_RETENTION') | default('7d', true) }}"
+
+  tasks:
+    - name: Validate required deployment variables
+      ansible.builtin.assert:
+        that:
+          - image_tag is defined
+          - image_tag | length > 0
+          - db_password is defined
+          - db_password | length > 0
+          - grafana_admin_password is defined
+          - grafana_admin_password | length > 0
+        fail_msg: "Required secrets (DB_PASSWORD, GRAFANA_ADMIN_PASSWORD) or IMAGE_TAG are missing."
+      no_log: true
+
+    - name: Ensure target directories exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ deploy_path }}"
+        - "{{ deploy_path }}/nginx"
+        - "{{ deploy_path }}/monitoring"
+        - "{{ deploy_path }}/monitoring/grafana/provisioning/datasources"
+        - "{{ deploy_path }}/monitoring/grafana/provisioning/dashboards"
+        - "{{ deploy_path }}/monitoring/grafana/dashboards"
+
+    - name: Check if image TAR archive was transferred
+      ansible.builtin.stat:
+        path: "{{ deploy_path }}/{{ tar_filename }}"
+      register: tar_file_stat
+
+    - name: Fail if image TAR is missing
+      ansible.builtin.fail:
+        msg: "Image archive {{ deploy_path }}/{{ tar_filename }} not found. Image transfer must precede deployment."
+      when: not tar_file_stat.stat.exists
+
+    - name: Load Docker image from TAR archive
+      ansible.builtin.command:
+        cmd: "docker load -i {{ deploy_path }}/{{ tar_filename }}"
+      register: docker_load_output
+      changed_when: true
+
+    - name: Display image load result
+      ansible.builtin.debug:
+        msg: "{{ docker_load_output.stdout }}"
+
+    - name: Copy Docker Compose configuration
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../compose.yaml"
+        dest: "{{ deploy_path }}/compose.yaml"
+        mode: "0644"
+
+    - name: Copy Nginx configuration
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../nginx/default.conf"
+        dest: "{{ deploy_path }}/nginx/default.conf"
+        mode: "0644"
+
+    - name: Copy Prometheus configuration
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../monitoring/prometheus.yml"
+        dest: "{{ deploy_path }}/monitoring/prometheus.yml"
+        mode: "0644"
+
+    - name: Copy Grafana provisioning configurations
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../monitoring/grafana/provisioning/"
+        dest: "{{ deploy_path }}/monitoring/grafana/provisioning/"
+        mode: "0644"
+
+    - name: Copy Grafana dashboard definitions
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../monitoring/grafana/dashboards/"
+        dest: "{{ deploy_path }}/monitoring/grafana/dashboards/"
+        mode: "0644"
+
+    - name: Render production environment configuration file
+      ansible.builtin.template:
+        src: "{{ playbook_dir }}/../templates/compose.env.j2"
+        dest: "{{ deploy_path }}/.env"
+        mode: "0600"
+      no_log: true
+
+    - name: Start or update Docker Compose stack
+      ansible.builtin.command:
+        cmd: "docker compose --project-directory {{ deploy_path }} up -d --remove-orphans"
+      register: compose_up_output
+      changed_when: true
+
+    - name: Wait for application health endpoint to return healthy and expected commit SHA
+      ansible.builtin.uri:
+        url: "http://127.0.0.1/health"
+        method: GET
+        status_code: 200
+        return_content: true
+      register: health_response
+      until: >
+        health_response.status == 200 and
+        (health_response.json.status | default('')) == 'ok' and
+        (health_response.json.commit | default('')) == image_tag
+      retries: 30
+      delay: 5
+
+    - name: Deployment verified successfully
+      ansible.builtin.debug:
+        msg: >
+          Deployment verified on {{ inventory_hostname }}.
+          Health status: {{ health_response.json.status }},
+          Database: {{ health_response.json.db }},
+          Commit: {{ health_response.json.commit }}
+
+    - name: Clean up transferred Docker image archive to preserve disk space
+      ansible.builtin.file:
+        path: "{{ deploy_path }}/{{ tar_filename }}"
+        state: absent
+

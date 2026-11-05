@@ -1,0 +1,101 @@
+---
+- name: Provision Ubuntu host for LoopClose Docker Compose
+  hosts: ec2
+  become: true
+  gather_facts: true
+
+  vars:
+    deploy_path: "{{ lookup('env', 'EC2_DEPLOY_PATH') | default('/opt/loopclose', true) }}"
+    app_user: "{{ ansible_user | default('ubuntu') }}"
+
+  tasks:
+    - name: Ensure apt cache is updated
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install system prerequisite packages
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - python3
+          - python3-pip
+          - ufw
+        state: present
+
+    - name: Ensure keyrings directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Download Docker official GPG key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: "0644"
+        force: false
+
+    - name: Add Docker official apt repository
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch={{ ansible_architecture | replace('x86_64', 'amd64') }} signed-by=/etc/apt/keyrings/docker.asc]
+          https://download.docker.com/linux/ubuntu
+          {{ ansible_distribution_release }} stable
+        state: present
+        filename: docker
+
+    - name: Install Docker Engine and Docker Compose plugin
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+    - name: Ensure Docker service is enabled and running
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add deployment user to docker group
+      ansible.builtin.user:
+        name: "{{ app_user }}"
+        groups: docker
+        append: true
+
+    - name: Create deployment directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: "0755"
+      loop:
+        - "{{ deploy_path }}"
+        - "{{ deploy_path }}/nginx"
+        - "{{ deploy_path }}/monitoring"
+        - "{{ deploy_path }}/monitoring/grafana"
+        - "{{ deploy_path }}/monitoring/grafana/provisioning"
+        - "{{ deploy_path }}/monitoring/grafana/provisioning/datasources"
+        - "{{ deploy_path }}/monitoring/grafana/provisioning/dashboards"
+        - "{{ deploy_path }}/monitoring/grafana/dashboards"
+        - "{{ deploy_path }}/artifacts"
+
+    - name: Verify Docker and Docker Compose plugin installation
+      ansible.builtin.command:
+        cmd: docker compose version
+      register: compose_version_output
+      changed_when: false
+
+    - name: Print Docker Compose version
+      ansible.builtin.debug:
+        msg: "Docker Compose installed successfully: {{ compose_version_output.stdout }}"
+

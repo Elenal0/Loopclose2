@@ -1,0 +1,265 @@
+name: LoopClose DevSecOps CI-CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: Secret scan (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks secret scanner
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  codeql:
+    name: SAST (CodeQL)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: python
+          queries: security-extended
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:python"
+
+  test:
+    name: Lint & Test (Ruff & Pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Ruff check (linter)
+        run: ruff check .
+
+      - name: Ruff format check
+        run: ruff format --check .
+
+      - name: Run Pytest test suite
+        env:
+          APP_ENV: test
+          LLM_PROVIDER: fake
+          DATABASE_URL: sqlite:///./test.db
+        run: pytest -q
+
+  pip-audit:
+    name: Dependency audit (pip-audit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Audit Python dependencies
+        run: pip-audit -r requirements.txt
+
+  docker-build:
+    name: Docker build & Trivy scan
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image locally
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: loopclose:${{ github.sha }}
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Run Trivy container vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: loopclose:${{ github.sha }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+
+      - name: Export and compress Docker image TAR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p build-tar
+          docker save loopclose:${{ github.sha }} | gzip > build-tar/loopclose_${{ github.sha }}.tar.gz
+
+      - name: Upload image TAR artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-tar
+          path: build-tar/loopclose_${{ github.sha }}.tar.gz
+          retention-days: 1
+
+  deploy:
+    name: SCP Transfer & Ansible Deploy to AWS EC2
+    runs-on: ubuntu-latest
+    needs: [gitleaks, codeql, test, pip-audit, docker-build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download image TAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: image-tar
+          path: build-tar
+
+      - name: Set up Python and Ansible
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible
+        run: pip install ansible
+
+      - name: Configure SSH and verify host key
+        env:
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          EC2_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        run: |
+          if [ -z "$EC2_HOST" ] || [ -z "$EC2_SSH_PRIVATE_KEY" ] || [ -z "$EC2_KNOWN_HOSTS" ]; then
+            echo "ERROR: Required deployment secrets (EC2_HOST, EC2_SSH_PRIVATE_KEY, EC2_KNOWN_HOSTS) are not set."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$EC2_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$EC2_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: SCP image TAR to AWS EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER || 'ubuntu' }}
+          EC2_DEPLOY_PATH: ${{ secrets.EC2_DEPLOY_PATH || '/opt/loopclose' }}
+        run: |
+          ssh -o StrictHostKeyChecking=yes "${EC2_USER}@${EC2_HOST}" "mkdir -p ${EC2_DEPLOY_PATH}"
+          scp -o StrictHostKeyChecking=yes "build-tar/loopclose_${{ github.sha }}.tar.gz" "${EC2_USER}@${EC2_HOST}:${EC2_DEPLOY_PATH}/loopclose_${{ github.sha }}.tar.gz"
+
+      - name: Run Ansible deployment playbook
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER || 'ubuntu' }}
+          EC2_DEPLOY_PATH: ${{ secrets.EC2_DEPLOY_PATH || '/opt/loopclose' }}
+          IMAGE_TAG: ${{ github.sha }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          GRAFANA_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL || 'gemini-1.5-flash' }}
+        run: |
+          ansible-playbook -i ops/ansible/inventory.ini ops/ansible/playbooks/deploy.yml \
+            -e "image_tag=${{ github.sha }}" \
+            -e "tar_filename=loopclose_${{ github.sha }}.tar.gz"
+
+      - name: Verify application health and commit SHA
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+        run: |
+          if [ -n "$APP_URL" ]; then
+            echo "Smoke testing public endpoint: $APP_URL/health"
+            for i in $(seq 1 12); do
+              body=$(curl -sSL --max-time 15 "$APP_URL/health" || echo "")
+              commit=$(echo "$body" | grep -o '"commit":"[^"]*' | cut -d'"' -f4 || echo "")
+              status=$(echo "$body" | grep -o '"status":"[^"]*' | cut -d'"' -f4 || echo "")
+              echo "Attempt $i: status=$status commit=$commit"
+              if [ "$commit" = "${{ github.sha }}" ] && [ "$status" = "ok" ]; then
+                echo "Deployment successfully verified: commit matches ${{ github.sha }}"
+                exit 0
+              fi
+              sleep 5
+            done
+            echo "Public endpoint did not match expected commit in time"
+            exit 1
+          else
+            echo "APP_URL secret not provided; relying on Ansible internal health check verification."
+          fi
+
+      - name: Clean up local SSH key material
+        if: always()
+        run: rm -rf ~/.ssh/id_rsa build-tar
+
+  zap-scan:
+    name: DAST (OWASP ZAP baseline scan)
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: ${{ secrets.APP_URL }}
+          rules_file_name: ".zap/rules.tsv"
+          allow_issue_writing: false
+          fail_action: false
+        continue-on-error: true
+
+      - name: Upload ZAP Scan Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-baseline-report
+          path: zap_checksum.txt
+          retention-days: 7

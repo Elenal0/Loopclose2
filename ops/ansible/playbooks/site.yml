@@ -1,0 +1,12 @@
+---
+# Master playbook for LoopClose EC2 provisioning and deployment
+- name: Provision EC2 Host
+  ansible.builtin.import_playbook: provision.yml
+  tags:
+    - provision
+
+- name: Deploy LoopClose Stack
+  ansible.builtin.import_playbook: deploy.yml
+  tags:
+    - deploy
+

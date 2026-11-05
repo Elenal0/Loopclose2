@@ -1,0 +1,9 @@
+# OWASP ZAP rule configuration for LoopClose
+# Format: <rule-id>	<IGNORE|INFO|WARN|OUTOFCONPE|FAIL>	[comment]
+10015	IGNORE	Re-examine Cache-control Directives
+10020	INFO	Anti-CSRF Tokens
+10021	INFO	X-Content-Type-Options Header Missing
+10027	INFO	Information Disclosure - Suspicious Comments
+10038	INFO	Content Security Policy (CSP) Header Not Set
+10096	INFO	Timestamp Disclosure
+
