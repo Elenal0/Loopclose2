@@ -1,4 +1,4 @@
-# TASKS.md — LoopClose Project Completion Checklist
+# TASKS.md — LoopClose Project Completion Checklist...
 
 > This plan supersedes the original 9-unit build plan. The existing product implementation is complete through Units 1–6. Original Units 7, 8 and 9 are intentionally skipped. The remaining work is a new infrastructure/DevSecOps workstream. Tick a task only after implementation and verification; never mark cloud work complete based only on configuration files.
 
