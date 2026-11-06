@@ -338,7 +338,22 @@ def test_web_items_routes(client):
     assert "Action Items" in resp.text
 
     # Test GET /dashboard contains wired cards
-    dash = client.get("/")
+    dash = client.get("/dashboard")
     assert dash.status_code == 200
     assert "Needs attention" in dash.text
     assert "Upcoming meetings" in dash.text
+
+
+def test_dashboard_renders_with_upcoming_meetings(client, db_session: Session):
+    """Regression: SQLite returns naive datetimes; dashboard must not 500."""
+    _setup_meeting(db_session, title="Upcoming Sync")
+    dash = client.get("/dashboard")
+    assert dash.status_code == 200
+    assert "Upcoming Sync" in dash.text
+
+
+def test_home_page_explains_product(client):
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "Open dashboard" in resp.text
+    assert 'href="/dashboard"' in resp.text

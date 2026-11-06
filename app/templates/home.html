@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Close every meeting loop{% endblock %}
+{% block meta_description %}LoopClose turns meeting notes into owned, tracked action items — with AI recaps, carry-forward, handovers and a shared knowledge base.{% endblock %}
+
+{% block content %}
+
+{# ── Hero ─────────────────────────────────────────────────────────────── #}
+<section class="home-hero" aria-labelledby="home-title">
+  <div class="home-hero-copy">
+    <span class="hero-eyebrow">
+      <svg width="14" height="14" aria-hidden="true"><use href="#icon-sparkle"/></svg>
+      AI-powered meeting &amp; handover tracker
+    </span>
+    <h1 id="home-title">Every meeting opens loops.<br><span class="home-highlight">LoopClose closes them.</span></h1>
+    <p class="home-lead">
+      Decisions get forgotten, action items lose their owners, and handovers drop context.
+      LoopClose captures what was agreed, turns it into owned and dated action items,
+      and keeps following up until every loop is closed.
+    </p>
+    <div class="hero-actions">
+      <a href="/dashboard" class="btn btn-primary">
+        Open dashboard
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-arrow-right"/></svg>
+      </a>
+      <a href="/meetings/new" class="btn btn-outline-light">
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-plus"/></svg>
+        Schedule a meeting
+      </a>
+    </div>
+    <ul class="home-hero-points" role="list">
+      <li><svg width="16" height="16" aria-hidden="true"><use href="#icon-check-circle"/></svg> AI recaps you review before they apply</li>
+      <li><svg width="16" height="16" aria-hidden="true"><use href="#icon-check-circle"/></svg> Open items carry forward automatically</li>
+      <li><svg width="16" height="16" aria-hidden="true"><use href="#icon-check-circle"/></svg> Full history for every item</li>
+    </ul>
+  </div>
+  <div class="home-hero-art">
+    <img src="/static/img/home-hero.svg" alt="LoopClose app window: meeting notes on the left, an AI recap with owned action items on the right" width="560" height="420">
+  </div>
+</section>
+
+{# ── Problem → outcome ────────────────────────────────────────────────── #}
+<section class="home-section" aria-labelledby="why-title">
+  <div class="home-section-head">
+    <span class="section-title">Why LoopClose</span>
+    <h2 id="why-title">Meetings are where work gets promised, and then forgotten</h2>
+  </div>
+  <div class="home-compare">
+    <div class="card home-compare-card is-before">
+      <h3>
+        <span class="card-title-icon is-warning" aria-hidden="true"><svg width="16" height="16"><use href="#icon-alert-triangle"/></svg></span>
+        Without a closed loop
+      </h3>
+      <ul role="list">
+        <li>Decisions live in someone's private notes</li>
+        <li>"Someone will look into it" means nobody does</li>
+        <li>The same open items resurface every week</li>
+        <li>Handovers lose context when people change roles</li>
+      </ul>
+    </div>
+    <div class="card home-compare-card is-after">
+      <h3>
+        <span class="card-title-icon" aria-hidden="true"><svg width="16" height="16"><use href="#icon-check-circle"/></svg></span>
+        With LoopClose
+      </h3>
+      <ul role="list">
+        <li>Decisions are recorded against the meeting they came from</li>
+        <li>Every action item has one owner and a due date</li>
+        <li>Unfinished items carry forward to the next meeting</li>
+        <li>Handovers reassign ownership with a full audit trail</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{# ── How it works ─────────────────────────────────────────────────────── #}
+<section class="home-section" aria-labelledby="how-title">
+  <div class="home-section-head">
+    <span class="section-title">How it works</span>
+    <h2 id="how-title">From conversation to closed loop in four steps</h2>
+  </div>
+  <ol class="home-steps" role="list">
+    <li class="card home-step">
+      <img src="/static/img/step-capture.svg" alt="" width="200" height="140">
+      <span class="home-step-num">1</span>
+      <h3>Capture the meeting</h3>
+      <p class="text-muted">Schedule a meeting or handover, add participants and an agenda, then paste or type the raw notes.</p>
+    </li>
+    <li class="card home-step">
+      <img src="/static/img/step-recap.svg" alt="" width="200" height="140">
+      <span class="home-step-num is-ai">2</span>
+      <h3>Get an AI recap</h3>
+      <p class="text-muted">AI drafts a summary, key decisions and proposed action items. You review and edit before anything is saved.</p>
+    </li>
+    <li class="card home-step">
+      <img src="/static/img/step-track.svg" alt="" width="200" height="140">
+      <span class="home-step-num">3</span>
+      <h3>Assign &amp; track</h3>
+      <p class="text-muted">Each item gets an owner, priority and due date. Overdue and unowned work is flagged on the dashboard.</p>
+    </li>
+    <li class="card home-step">
+      <img src="/static/img/step-handover.svg" alt="" width="200" height="140">
+      <span class="home-step-num">4</span>
+      <h3>Carry forward &amp; close</h3>
+      <p class="text-muted">Open items roll into the next meeting until they are closed with a recorded outcome.</p>
+    </li>
+  </ol>
+</section>
+
+{# ── Features ─────────────────────────────────────────────────────────── #}
+<section class="home-section" aria-labelledby="features-title">
+  <div class="home-section-head">
+    <span class="section-title">Features</span>
+    <h2 id="features-title">Everything a team needs to follow through</h2>
+  </div>
+  <div class="home-features">
+    <div class="card home-feature">
+      <span class="home-feature-icon is-ai" aria-hidden="true"><svg width="20" height="20"><use href="#icon-sparkle"/></svg></span>
+      <h3>AI meeting recaps</h3>
+      <p class="text-muted">Summaries, decisions and proposed action items from raw notes, with safe fallbacks if the AI is unavailable.</p>
+    </div>
+    <div class="card home-feature">
+      <span class="home-feature-icon" aria-hidden="true"><svg width="20" height="20"><use href="#icon-check-circle"/></svg></span>
+      <h3>Action item tracker</h3>
+      <p class="text-muted">Statuses, priorities, blockers, overdue flags and closing outcomes, filterable by owner and meeting.</p>
+    </div>
+    <div class="card home-feature">
+      <span class="home-feature-icon is-warning" aria-hidden="true"><svg width="20" height="20"><use href="#icon-arrow-repeat"/></svg></span>
+      <h3>Carry-forward</h3>
+      <p class="text-muted">Link meetings in a series so unfinished work automatically follows you into the next one.</p>
+    </div>
+    <div class="card home-feature">
+      <span class="home-feature-icon is-info" aria-hidden="true"><svg width="20" height="20"><use href="#icon-users"/></svg></span>
+      <h3>Structured handovers</h3>
+      <p class="text-muted">Move ownership from one teammate to another in one step, without losing history.</p>
+    </div>
+    <div class="card home-feature">
+      <span class="home-feature-icon" aria-hidden="true"><svg width="20" height="20"><use href="#icon-book"/></svg></span>
+      <h3>Knowledge base</h3>
+      <p class="text-muted">Store docs and transcripts, and let AI suggest related knowledge for any meeting or item.</p>
+    </div>
+    <div class="card home-feature">
+      <span class="home-feature-icon is-ai" aria-hidden="true"><svg width="20" height="20"><use href="#icon-bell"/></svg></span>
+      <h3>Catch-up briefs &amp; nudges</h3>
+      <p class="text-muted">Personalised briefs for people who missed a meeting, and polite nudges for overdue items.</p>
+    </div>
+  </div>
+</section>
+
+{# ── Built secure ─────────────────────────────────────────────────────── #}
+<section class="home-section" aria-labelledby="secure-title">
+  <div class="card home-secure">
+    <div class="home-secure-copy">
+      <span class="section-title">Built with DevSecOps</span>
+      <h2 id="secure-title">Shipped through a secure, automated pipeline</h2>
+      <p class="text-muted">Every change is scanned and tested before it reaches production, then monitored once it's live.</p>
+    </div>
+    <ul class="home-secure-list" role="list">
+      <li><strong>Gitleaks</strong><span>Secret scanning</span></li>
+      <li><strong>CodeQL</strong><span>Static analysis</span></li>
+      <li><strong>Pytest &amp; Ruff</strong><span>Tests &amp; lint</span></li>
+      <li><strong>pip-audit</strong><span>Dependency audit</span></li>
+      <li><strong>Trivy</strong><span>Container scan</span></li>
+      <li><strong>OWASP ZAP</strong><span>Dynamic scan</span></li>
+      <li><strong>Ansible</strong><span>AWS EC2 deploy</span></li>
+      <li><strong>Prometheus &amp; Grafana</strong><span>Monitoring</span></li>
+    </ul>
+  </div>
+</section>
+
+{# ── CTA ──────────────────────────────────────────────────────────────── #}
+<section class="hero home-cta" aria-labelledby="cta-title">
+  <div class="hero-content">
+    <h2 id="cta-title">Ready to close your first loop?</h2>
+    <p>Add your team, schedule a meeting, and let LoopClose handle the follow-through.</p>
+    <div class="hero-actions">
+      <a href="/people" class="btn btn-outline-light">
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-users"/></svg>
+        Add your team
+      </a>
+      <a href="/dashboard" class="btn btn-primary">
+        Open dashboard
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-arrow-right"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <img src="/static/img/hero-loop.svg" alt="" width="440" height="300">
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-label="Capture meeting notes">
+  <rect width="200" height="140" rx="16" fill="#E3F4F1"/>
+  <rect x="44" y="22" width="112" height="100" rx="10" fill="#FFFFFF" stroke="#99D5CC" stroke-width="2"/>
+  <rect x="58" y="36" width="56" height="8" rx="4" fill="#0F766E"/>
+  <rect x="58" y="54" width="84" height="6" rx="3" fill="#C4D1D4"/>
+  <rect x="58" y="66" width="76" height="6" rx="3" fill="#C4D1D4"/>
+  <rect x="58" y="78" width="80" height="6" rx="3" fill="#C4D1D4"/>
+  <rect x="58" y="90" width="50" height="6" rx="3" fill="#C4D1D4"/>
+  <g transform="translate(128 84) rotate(-35)">
+    <rect x="0" y="0" width="12" height="46" rx="3" fill="#FBBF24"/>
+    <path d="M0 46l6 10 6-10z" fill="#0B1F26"/>
+    <rect x="0" y="0" width="12" height="8" rx="3" fill="#F59E0B"/>
+  </g>
+  <circle cx="30" cy="30" r="4" fill="#14B8A6" opacity=".6"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-label="AI generates a recap">
+  <rect width="200" height="140" rx="16" fill="#F3EEFF"/>
+  <rect x="30" y="34" width="70" height="76" rx="10" fill="#FFFFFF" stroke="#DCCBFB" stroke-width="2"/>
+  <rect x="40" y="46" width="50" height="6" rx="3" fill="#C4D1D4"/>
+  <rect x="40" y="58" width="44" height="6" rx="3" fill="#C4D1D4"/>
+  <rect x="40" y="70" width="48" height="6" rx="3" fill="#C4D1D4"/>
+  <rect x="40" y="82" width="30" height="6" rx="3" fill="#C4D1D4"/>
+  <path d="M106 72h16" stroke="#7C3AED" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 6"/>
+  <circle cx="148" cy="72" r="26" fill="#7C3AED"/>
+  <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" transform="translate(136 60)">
+    <path d="M12 0v5M12 19v5M0 12h5M19 12h5M3.5 3.5l3.5 3.5M17 17l3.5 3.5M3.5 20.5l3.5-3.5M17 7l3.5-3.5"/>
+    <circle cx="12" cy="12" r="3.5"/>
+  </g>
+  <circle cx="176" cy="30" r="4" fill="#A78BFA"/>
+  <circle cx="22" cy="118" r="3" fill="#A78BFA" opacity=".6"/>
+</svg>
