@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" role="img" aria-label="Carry forward open items and hand over ownership">
+  <rect width="200" height="140" rx="16" fill="#E0ECFF"/>
+  <path d="M136 46A42 42 0 1 0 142 84" fill="none" stroke="#0F766E" stroke-width="6" stroke-linecap="round"/>
+  <path d="M128 42l10 4 2-10" fill="none" stroke="#0F766E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="76" cy="70" r="16" fill="#FEF3C7" stroke="#fff" stroke-width="3"/>
+  <text x="76" y="75" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400E">TB</text>
+  <circle cx="124" cy="70" r="16" fill="#CCFBF1" stroke="#fff" stroke-width="3"/>
+  <text x="124" y="75" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#0F766E">PS</text>
+  <path d="M94 70h12" stroke="#1D4ED8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M103 65l5 5-5 5" fill="none" stroke="#1D4ED8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="150" cy="106" r="12" fill="#0F766E"/>
+  <path d="M145 106l3.5 3.5 6-6.5" fill="none" stroke="#FBBF24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

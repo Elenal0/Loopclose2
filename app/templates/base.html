@@ -6,10 +6,13 @@
   <title>{% block title %}{{ page_title | default("LoopClose") }}{% endblock %} — LoopClose</title>
   <meta name="description" content="{% block meta_description %}AI-powered meeting and handover tracker{% endblock %}">
 
-  <!-- Inter font -->
+  <meta name="theme-color" content="#0B1F26">
+  <link rel="icon" type="image/svg+xml" href="/static/img/logo.svg">
+
+  <!-- Fonts: Plus Jakarta Sans (display), Inter (UI), JetBrains Mono (IDs) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
   <!-- App CSS -->
   <link rel="stylesheet" href="/static/css/app.css">
@@ -127,22 +130,23 @@
   <div class="container nav-inner">
     <a href="/" class="nav-logo" aria-label="LoopClose home">
       <span class="nav-logo-icon" aria-hidden="true">
-        <svg width="20" height="20"><use href="#icon-loop"/></svg>
+        <img src="/static/img/logo.svg" alt="" width="34" height="34">
       </span>
-      <span class="nav-logo-text">LoopClose</span>
+      <span class="nav-logo-text">Loop<span>Close</span></span>
     </a>
 
     <nav aria-label="Main navigation">
       <ul class="nav-links" role="list">
-        <li><a href="/" class="nav-link {% if request.url.path == '/' %}active{% endif %}">Dashboard</a></li>
+        <li><a href="/dashboard" class="nav-link {% if request.url.path == '/dashboard' %}active{% endif %}">
+          <svg width="16" height="16" aria-hidden="true"><use href="#icon-loop"/></svg> <span class="nav-link-label">Dashboard</span></a></li>
         <li><a href="/meetings" class="nav-link {% if request.url.path.startswith('/meetings') %}active{% endif %}">
-          <svg width="16" height="16" aria-hidden="true"><use href="#icon-calendar"/></svg> Meetings</a></li>
+          <svg width="16" height="16" aria-hidden="true"><use href="#icon-calendar"/></svg> <span class="nav-link-label">Meetings</span></a></li>
         <li><a href="/people" class="nav-link {% if request.url.path.startswith('/people') %}active{% endif %}">
-          <svg width="16" height="16" aria-hidden="true"><use href="#icon-users"/></svg> People</a></li>
+          <svg width="16" height="16" aria-hidden="true"><use href="#icon-users"/></svg> <span class="nav-link-label">People</span></a></li>
         <li><a href="/items" class="nav-link {% if request.url.path.startswith('/items') %}active{% endif %}">
-          <svg width="16" height="16" aria-hidden="true"><use href="#icon-check-circle"/></svg> Items</a></li>
+          <svg width="16" height="16" aria-hidden="true"><use href="#icon-check-circle"/></svg> <span class="nav-link-label">Items</span></a></li>
         <li><a href="/kb" class="nav-link {% if request.url.path.startswith('/kb') %}active{% endif %}">
-          <svg width="16" height="16" aria-hidden="true"><use href="#icon-book"/></svg> Knowledge</a></li>
+          <svg width="16" height="16" aria-hidden="true"><use href="#icon-book"/></svg> <span class="nav-link-label">Knowledge</span></a></li>
       </ul>
     </nav>
 
@@ -174,7 +178,8 @@
 <!-- ── Footer ────────────────────────────────────────────────────────────────── -->
 <footer class="site-footer" role="contentinfo">
   <div class="container footer-inner">
-    <span class="footer-name">LoopClose</span>
+    <span class="footer-name"><img src="/static/img/logo.svg" alt="" width="20" height="20"> LoopClose</span>
+    <span class="footer-tagline">Close every loop — decisions, owners, follow-through.</span>
     {% if settings is defined and settings.app_env != 'production' %}
     <span class="badge badge-neutral">{{ settings.app_env }}</span>
     {% endif %}

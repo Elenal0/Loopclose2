@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" role="img" aria-label="LoopClose app window showing a meeting recap turning into owned action items">
+  <defs>
+    <linearGradient id="hh-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5EEAD4"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+    <linearGradient id="hh-ai" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="hh-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#04141A" flood-opacity=".35"/>
+    </filter>
+  </defs>
+
+  <!-- orbit -->
+  <circle cx="290" cy="210" r="196" fill="none" stroke="url(#hh-ring)" stroke-width="2.5" stroke-dasharray="5 11" opacity=".5"/>
+
+  <!-- app window -->
+  <g filter="url(#hh-shadow)">
+    <rect x="40" y="56" width="440" height="300" rx="18" fill="#FFFFFF"/>
+    <path d="M40 74a18 18 0 0 1 18-18h404a18 18 0 0 1 18 18v20H40z" fill="#0B1F26"/>
+    <circle cx="62" cy="76" r="5" fill="#F87171"/>
+    <circle cx="78" cy="76" r="5" fill="#FBBF24"/>
+    <circle cx="94" cy="76" r="5" fill="#4ADE80"/>
+    <rect x="200" y="70" width="120" height="12" rx="6" fill="#ffffff" opacity=".14"/>
+
+    <!-- sidebar -->
+    <rect x="40" y="94" width="96" height="262" fill="#F3F6F7"/>
+    <rect x="54" y="112" width="68" height="10" rx="5" fill="#0F766E"/>
+    <rect x="54" y="134" width="56" height="8" rx="4" fill="#C4D1D4"/>
+    <rect x="54" y="152" width="62" height="8" rx="4" fill="#C4D1D4"/>
+    <rect x="54" y="170" width="48" height="8" rx="4" fill="#C4D1D4"/>
+    <rect x="54" y="188" width="58" height="8" rx="4" fill="#C4D1D4"/>
+
+    <!-- meeting header -->
+    <rect x="156" y="112" width="170" height="14" rx="7" fill="#0F1F26"/>
+    <rect x="336" y="112" width="52" height="14" rx="7" fill="#E0ECFF"/>
+    <rect x="156" y="134" width="110" height="8" rx="4" fill="#7A8A91" opacity=".6"/>
+
+    <!-- notes block -->
+    <rect x="156" y="156" width="150" height="120" rx="10" fill="#F3F6F7"/>
+    <rect x="168" y="170" width="70" height="8" rx="4" fill="#51626A" opacity=".7"/>
+    <rect x="168" y="188" width="124" height="6" rx="3" fill="#C4D1D4"/>
+    <rect x="168" y="200" width="112" height="6" rx="3" fill="#C4D1D4"/>
+    <rect x="168" y="212" width="120" height="6" rx="3" fill="#C4D1D4"/>
+    <rect x="168" y="224" width="90" height="6" rx="3" fill="#C4D1D4"/>
+    <rect x="168" y="236" width="116" height="6" rx="3" fill="#C4D1D4"/>
+    <rect x="168" y="248" width="76" height="6" rx="3" fill="#C4D1D4"/>
+
+    <!-- AI recap panel -->
+    <rect x="318" y="156" width="146" height="184" rx="10" fill="#F3EEFF" stroke="#DCCBFB"/>
+    <rect x="330" y="168" width="64" height="18" rx="9" fill="url(#hh-ai)"/>
+    <text x="352" y="181" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#fff">Recap</text>
+    <g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" transform="translate(336 171)">
+      <path d="M6 0v3M6 9v3M0 6h3M9 6h3"/>
+    </g>
+    <!-- items -->
+    <g transform="translate(330 196)">
+      <rect width="122" height="30" rx="7" fill="#FFFFFF"/>
+      <circle cx="14" cy="15" r="7" fill="#15803D"/>
+      <path d="M10.5 15l2.5 2.5 4.5-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="28" y="9" width="60" height="6" rx="3" fill="#0F1F26" opacity=".7"/>
+      <circle cx="108" cy="15" r="7" fill="#DBEAFE"/>
+      <rect x="28" y="19" width="38" height="4" rx="2" fill="#7A8A91" opacity=".6"/>
+    </g>
+    <g transform="translate(330 232)">
+      <rect width="122" height="30" rx="7" fill="#FFFFFF"/>
+      <circle cx="14" cy="15" r="7" fill="none" stroke="#D97706" stroke-width="2.2"/>
+      <rect x="28" y="9" width="70" height="6" rx="3" fill="#0F1F26" opacity=".7"/>
+      <circle cx="108" cy="15" r="7" fill="#FCE7F3"/>
+      <rect x="28" y="19" width="30" height="4" rx="2" fill="#D97706" opacity=".7"/>
+    </g>
+    <g transform="translate(330 268)">
+      <rect width="122" height="30" rx="7" fill="#FFFFFF"/>
+      <circle cx="14" cy="15" r="7" fill="none" stroke="#1D4ED8" stroke-width="2.2"/>
+      <rect x="28" y="9" width="54" height="6" rx="3" fill="#0F1F26" opacity=".7"/>
+      <circle cx="108" cy="15" r="7" fill="#FEF3C7"/>
+      <rect x="28" y="19" width="44" height="4" rx="2" fill="#7A8A91" opacity=".6"/>
+    </g>
+    <rect x="330" y="306" width="122" height="22" rx="7" fill="#7C3AED"/>
+    <rect x="364" y="314" width="54" height="6" rx="3" fill="#fff" opacity=".9"/>
+
+    <!-- decisions -->
+    <rect x="156" y="288" width="150" height="52" rx="10" fill="#E3F4F1"/>
+    <circle cx="172" cy="304" r="4" fill="#0F766E"/>
+    <rect x="182" y="300" width="100" height="7" rx="3.5" fill="#0F766E" opacity=".6"/>
+    <circle cx="172" cy="322" r="4" fill="#0F766E"/>
+    <rect x="182" y="318" width="80" height="7" rx="3.5" fill="#0F766E" opacity=".6"/>
+  </g>
+
+  <!-- floating stat card -->
+  <g filter="url(#hh-shadow)" transform="translate(408 30)">
+    <rect width="132" height="62" rx="14" fill="#FFFFFF"/>
+    <circle cx="30" cy="31" r="16" fill="#0F766E"/>
+    <path d="M38 22A11 11 0 1 0 41 31" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <path d="M23 31l4.5 4.5 7-7.5" fill="none" stroke="#FBBF24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="56" y="20" width="58" height="9" rx="4.5" fill="#0F1F26"/>
+    <rect x="56" y="35" width="42" height="7" rx="3.5" fill="#15803D" opacity=".6"/>
+  </g>
+
+  <!-- floating handover card -->
+  <g filter="url(#hh-shadow)" transform="translate(6 300)">
+    <rect width="150" height="70" rx="14" fill="#FFFFFF"/>
+    <circle cx="30" cy="35" r="13" fill="#FEF3C7"/>
+    <text x="30" y="39.5" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#92400E">TB</text>
+    <path d="M50 35h40" stroke="#0F766E" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 5"/>
+    <path d="M86 30l6 5-6 5" fill="none" stroke="#0F766E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="116" cy="35" r="13" fill="#CCFBF1"/>
+    <text x="116" y="39.5" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#0F766E">PS</text>
+  </g>
+
+  <circle cx="520" cy="300" r="5" fill="#5EEAD4" opacity=".8"/>
+  <circle cx="24" cy="120" r="4" fill="#FBBF24" opacity=".8"/>
+  <circle cx="500" cy="388" r="3.5" fill="#A78BFA" opacity=".9"/>
+</svg>

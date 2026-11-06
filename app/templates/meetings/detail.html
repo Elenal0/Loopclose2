@@ -63,35 +63,29 @@
 </div>
 
 <!-- Tabs Navigation -->
-<div class="tabs-nav" style="border-bottom: 1px solid var(--border); margin-bottom: 24px; display: flex; gap: 8px; overflow-x: auto;">
+<div class="tabs-nav">
   <a href="/meetings/{{ meeting.id }}?tab=overview"
-     class="tab-link {% if active_tab == 'overview' %}active{% endif %}"
-     style="padding: 10px 16px; text-decoration: none; font-weight: 500; color: var(--text-high); {% if active_tab == 'overview' %}border-bottom: 2px solid var(--primary); color: var(--primary);{% endif %}">
+     class="tab-link {% if active_tab == 'overview' %}active{% endif %}">
     Overview
   </a>
   <a href="/meetings/{{ meeting.id }}?tab=notes"
-     class="tab-link {% if active_tab == 'notes' %}active{% endif %}"
-     style="padding: 10px 16px; text-decoration: none; font-weight: 500; color: var(--text-high); {% if active_tab == 'notes' %}border-bottom: 2px solid var(--primary); color: var(--primary);{% endif %}">
+     class="tab-link {% if active_tab == 'notes' %}active{% endif %}">
     Notes & Recap
   </a>
   <a href="/meetings/{{ meeting.id }}?tab=items"
-     class="tab-link {% if active_tab == 'items' %}active{% endif %}"
-     style="padding: 10px 16px; text-decoration: none; font-weight: 500; color: var(--text-high); {% if active_tab == 'items' %}border-bottom: 2px solid var(--primary); color: var(--primary);{% endif %}">
+     class="tab-link {% if active_tab == 'items' %}active{% endif %}">
     Items ({{ meeting.current_items|length }})
   </a>
   <a href="/meetings/{{ meeting.id }}?tab=brief"
-     class="tab-link {% if active_tab == 'brief' %}active{% endif %}"
-     style="padding: 10px 16px; text-decoration: none; font-weight: 500; color: var(--text-high); {% if active_tab == 'brief' %}border-bottom: 2px solid var(--primary); color: var(--primary);{% endif %}">
+     class="tab-link {% if active_tab == 'brief' %}active{% endif %}">
     Brief
   </a>
   <a href="/meetings/{{ meeting.id }}?tab=knowledge"
-     class="tab-link {% if active_tab == 'knowledge' %}active{% endif %}"
-     style="padding: 10px 16px; text-decoration: none; font-weight: 500; color: var(--text-high); {% if active_tab == 'knowledge' %}border-bottom: 2px solid var(--primary); color: var(--primary);{% endif %}">
+     class="tab-link {% if active_tab == 'knowledge' %}active{% endif %}">
     Knowledge
   </a>
   <a href="/meetings/{{ meeting.id }}?tab=history"
-     class="tab-link {% if active_tab == 'history' %}active{% endif %}"
-     style="padding: 10px 16px; text-decoration: none; font-weight: 500; color: var(--text-high); {% if active_tab == 'history' %}border-bottom: 2px solid var(--primary); color: var(--primary);{% endif %}">
+     class="tab-link {% if active_tab == 'history' %}active{% endif %}">
     History
   </a>
 </div>

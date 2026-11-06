@@ -18,7 +18,29 @@ router = APIRouter(tags=["dashboard"])
 templates = Jinja2Templates(directory="app/templates")
 
 
+def _as_utc(value: datetime) -> datetime:
+    """Return an aware UTC datetime.
+
+    SQLite drops tzinfo even for DateTime(timezone=True) columns, so values read
+    back are naive. Treat naive values as UTC so comparisons never raise.
+    """
+    return value.replace(tzinfo=UTC) if value.tzinfo is None else value
+
+
 @router.get("/", response_class=HTMLResponse)
+def home(request: Request, db: Session = Depends(get_db)) -> HTMLResponse:
+    """Render the public home page explaining what LoopClose does."""
+    return templates.TemplateResponse(
+        request=request,
+        name="home.html",
+        context={
+            "page_title": "Close every meeting loop",
+            "people": people_service.list_people(db, active_only=False),
+        },
+    )
+
+
+@router.get("/dashboard", response_class=HTMLResponse)
 def dashboard(
     request: Request,
     db: Session = Depends(get_db),
@@ -48,7 +70,9 @@ def dashboard(
     now = datetime.now(UTC)
     meetings = meeting_service.list_meetings(db)
     upcoming_meetings = [
-        m for m in meetings if not m.is_closed and m.scheduled_at >= (now - timedelta(hours=2))
+        m
+        for m in meetings
+        if not m.is_closed and _as_utc(m.scheduled_at) >= (now - timedelta(hours=2))
     ][:5]
 
     # Recent decisions

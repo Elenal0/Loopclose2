@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 300" role="img" aria-label="Meeting notes flowing into action items that close the loop">
+  <defs>
+    <linearGradient id="h-card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E9F5F3"/>
+    </linearGradient>
+    <linearGradient id="h-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5EEAD4"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+    <linearGradient id="h-ai" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+
+  <!-- big loop ring -->
+  <circle cx="230" cy="150" r="118" fill="none" stroke="url(#h-ring)" stroke-width="3" stroke-dasharray="6 10" opacity=".55"/>
+  <circle cx="230" cy="150" r="86" fill="none" stroke="#5EEAD4" stroke-width="1.5" opacity=".25"/>
+
+  <!-- meeting card (left) -->
+  <g transform="translate(30 56)">
+    <rect width="150" height="112" rx="14" fill="url(#h-card)"/>
+    <rect x="14" y="14" width="34" height="34" rx="10" fill="#CCFBF1"/>
+    <g fill="none" stroke="#0F766E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(21 21)">
+      <rect x="0" y="2" width="20" height="18" rx="3"/>
+      <line x1="0" y1="8" x2="20" y2="8"/>
+      <line x1="6" y1="0" x2="6" y2="4"/>
+      <line x1="14" y1="0" x2="14" y2="4"/>
+    </g>
+    <rect x="58" y="18" width="76" height="9" rx="4.5" fill="#0F1F26" opacity=".8"/>
+    <rect x="58" y="34" width="52" height="7" rx="3.5" fill="#51626A" opacity=".45"/>
+    <rect x="14" y="62" width="122" height="7" rx="3.5" fill="#51626A" opacity=".3"/>
+    <rect x="14" y="76" width="100" height="7" rx="3.5" fill="#51626A" opacity=".3"/>
+    <!-- avatars -->
+    <circle cx="24" cy="98" r="8" fill="#DBEAFE" stroke="#fff" stroke-width="2"/>
+    <circle cx="36" cy="98" r="8" fill="#FCE7F3" stroke="#fff" stroke-width="2"/>
+    <circle cx="48" cy="98" r="8" fill="#FEF3C7" stroke="#fff" stroke-width="2"/>
+  </g>
+
+  <!-- AI sparkle chip -->
+  <g transform="translate(196 34)">
+    <rect width="78" height="30" rx="15" fill="url(#h-ai)"/>
+    <g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" transform="translate(12 7)">
+      <path d="M8 0v4M8 12v4M0 8h4M12 8h4"/>
+      <circle cx="8" cy="8" r="2.2"/>
+    </g>
+    <text x="36" y="20" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Recap</text>
+  </g>
+
+  <!-- action items card (right) -->
+  <g transform="translate(250 92)">
+    <rect width="164" height="150" rx="14" fill="url(#h-card)"/>
+    <rect x="14" y="14" width="80" height="9" rx="4.5" fill="#0F1F26" opacity=".8"/>
+    <!-- item 1 done -->
+    <g transform="translate(14 38)">
+      <rect width="136" height="28" rx="8" fill="#DCF5E4"/>
+      <circle cx="14" cy="14" r="7" fill="#15803D"/>
+      <path d="M10.5 14l2.5 2.5 4.5-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="28" y="10" width="70" height="8" rx="4" fill="#15803D" opacity=".55"/>
+    </g>
+    <!-- item 2 in progress -->
+    <g transform="translate(14 72)">
+      <rect width="136" height="28" rx="8" fill="#FEF0D0"/>
+      <circle cx="14" cy="14" r="7" fill="none" stroke="#D97706" stroke-width="2.4"/>
+      <rect x="28" y="10" width="84" height="8" rx="4" fill="#92400E" opacity=".5"/>
+    </g>
+    <!-- item 3 open -->
+    <g transform="translate(14 106)">
+      <rect width="136" height="28" rx="8" fill="#E0ECFF"/>
+      <circle cx="14" cy="14" r="7" fill="none" stroke="#1D4ED8" stroke-width="2.4"/>
+      <rect x="28" y="10" width="58" height="8" rx="4" fill="#1D4ED8" opacity=".45"/>
+    </g>
+  </g>
+
+  <!-- flow arrows -->
+  <path d="M182 120 C 210 120, 222 150, 246 150" fill="none" stroke="#5EEAD4" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7"/>
+  <path d="M240 144l7 6-7 6" fill="none" stroke="#5EEAD4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- closed loop badge -->
+  <g transform="translate(92 196)">
+    <circle cx="32" cy="32" r="32" fill="#0F766E"/>
+    <circle cx="32" cy="32" r="32" fill="none" stroke="#5EEAD4" stroke-width="2" opacity=".6"/>
+    <path d="M44 20A16 16 0 1 0 48 32" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <path d="M39.5 18.5l5.5 1.5 1.2-5.5" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24.5 32l5 5 9-9.5" fill="none" stroke="#FBBF24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- floating dots -->
+  <circle cx="58" cy="30" r="4" fill="#FBBF24" opacity=".8"/>
+  <circle cx="404" cy="58" r="5" fill="#5EEAD4" opacity=".7"/>
+  <circle cx="384" cy="270" r="3.5" fill="#A78BFA" opacity=".8"/>
+</svg>
