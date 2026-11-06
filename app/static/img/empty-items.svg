@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="All caught up">
+  <ellipse cx="80" cy="108" rx="56" ry="6" fill="#0F766E" opacity=".08"/>
+  <rect x="34" y="14" width="92" height="86" rx="12" fill="#FFFFFF" stroke="#C4D1D4" stroke-width="2"/>
+  <rect x="62" y="8" width="36" height="14" rx="5" fill="#E3F4F1" stroke="#99D5CC" stroke-width="2"/>
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="54" cy="42" r="7" fill="#DCF5E4"/>
+    <path d="M50.5 42l2.5 2.5 4.5-5" fill="none" stroke="#15803D" stroke-width="2.2"/>
+    <rect x="68" y="38" width="44" height="8" rx="4" fill="#C4D1D4"/>
+    <circle cx="54" cy="64" r="7" fill="#DCF5E4"/>
+    <path d="M50.5 64l2.5 2.5 4.5-5" fill="none" stroke="#15803D" stroke-width="2.2"/>
+    <rect x="68" y="60" width="34" height="8" rx="4" fill="#C4D1D4"/>
+    <circle cx="54" cy="86" r="7" fill="#DCF5E4"/>
+    <path d="M50.5 86l2.5 2.5 4.5-5" fill="none" stroke="#15803D" stroke-width="2.2"/>
+    <rect x="68" y="82" width="40" height="8" rx="4" fill="#C4D1D4"/>
+  </g>
+  <circle cx="128" cy="24" r="12" fill="#0F766E"/>
+  <path d="M122.5 24l4 4 7-7.5" fill="none" stroke="#FBBF24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="36" r="3" fill="#FBBF24" opacity=".7"/>
+  <circle cx="140" cy="76" r="2.5" fill="#14B8A6" opacity=".7"/>
+</svg>

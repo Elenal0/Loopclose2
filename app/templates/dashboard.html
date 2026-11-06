@@ -4,10 +4,30 @@
 {% block meta_description %}LoopClose dashboard — your open items, upcoming meetings, and recent decisions{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1 class="page-title">Dashboard</h1>
-  <p class="text-muted">Welcome to LoopClose — your AI-powered meeting and handover tracker.</p>
-</div>
+<section class="hero" aria-labelledby="dashboard-title">
+  <div class="hero-content">
+    <span class="hero-eyebrow">
+      <svg width="14" height="14" aria-hidden="true"><use href="#icon-sparkle"/></svg>
+      AI-powered follow-through
+    </span>
+    <h1 class="page-title" id="dashboard-title">Dashboard</h1>
+    <p>Welcome to LoopClose — your AI-powered meeting and handover tracker.
+       Turn every discussion into owned, tracked, and closed action items.</p>
+    <div class="hero-actions">
+      <a href="/meetings/new" class="btn btn-primary">
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-plus"/></svg>
+        New meeting
+      </a>
+      <a href="/items" class="btn btn-outline-light">
+        <svg width="16" height="16" aria-hidden="true"><use href="#icon-check-circle"/></svg>
+        Review action items
+      </a>
+    </div>
+  </div>
+  <div class="hero-art">
+    <img src="/static/img/hero-loop.svg" alt="Meeting notes flowing into tracked action items that close the loop" width="440" height="300">
+  </div>
+</section>
 
 {# Three-column grid per design.md §5.1 #}
 <div class="grid-3">
@@ -15,7 +35,8 @@
   {# Column 1: My Open Items #}
   <div class="card" style="display: flex; flex-direction: column;">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
-      <h2 class="card-title" style="font-size: 16px;">
+      <h2 class="card-title">
+        <span class="card-title-icon" aria-hidden="true"><svg width="16" height="16"><use href="#icon-check-circle"/></svg></span>
         {% if viewing_person %}
           My open items ({{ viewing_person.name }})
         {% else %}
@@ -33,7 +54,7 @@
       </div>
     {% else %}
       <div class="empty-state" style="flex: 1; padding: 32px 16px; text-align: center;">
-        <svg width="40" height="40" aria-hidden="true" style="stroke: var(--text-muted); stroke-width: 1.5; fill: none; margin-bottom: 8px;"><use href="#icon-check-circle"/></svg>
+        <img src="/static/img/empty-items.svg" alt="" class="empty-illustration" width="132" height="99">
         <p class="text-sm text-muted">No open items assigned to you right now.</p>
         <a href="/items" class="btn btn-secondary btn-sm">Browse all items</a>
       </div>
@@ -43,22 +64,25 @@
   {# Column 2: Needs attention #}
   <div class="card" style="display: flex; flex-direction: column;">
     <div class="card-header" style="padding-bottom: 12px; border-bottom: 1px solid var(--border);">
-      <h2 class="card-title" style="font-size: 16px;">Needs attention</h2>
+      <h2 class="card-title">
+        <span class="card-title-icon is-warning" aria-hidden="true"><svg width="16" height="16"><use href="#icon-alert-triangle"/></svg></span>
+        Needs attention
+      </h2>
     </div>
 
     <div class="stat-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 24px 16px; text-align: center;">
-      <a href="/items?overdue=true" class="stat-tile card" style="padding: 16px; text-decoration: none;">
-        <span class="stat-number {% if overdue_count > 0 %}text-danger{% else %}text-muted{% endif %}" style="font-size: 28px; font-weight: 700; display: block;">
+      <a href="/items?overdue=true" class="stat-tile card card-clickable" style="padding: 18px 12px; text-decoration: none;">
+        <span class="stat-number {% if overdue_count > 0 %}text-danger{% else %}text-muted{% endif %}">
           {{ overdue_count }}
         </span>
-        <span class="stat-label text-xs text-muted" style="text-transform: uppercase; letter-spacing: 0.5px;">Overdue</span>
+        <span class="stat-label text-xs text-muted">Overdue</span>
       </a>
 
-      <a href="/items" class="stat-tile card" style="padding: 16px; text-decoration: none;">
-        <span class="stat-number {% if needs_owner_count > 0 %}text-warning{% else %}text-muted{% endif %}" style="font-size: 28px; font-weight: 700; display: block;">
+      <a href="/items" class="stat-tile card card-clickable" style="padding: 18px 12px; text-decoration: none;">
+        <span class="stat-number {% if needs_owner_count > 0 %}text-warning{% else %}text-muted{% endif %}">
           {{ needs_owner_count }}
         </span>
-        <span class="stat-label text-xs text-muted" style="text-transform: uppercase; letter-spacing: 0.5px;">Needs owner</span>
+        <span class="stat-label text-xs text-muted">Needs owner</span>
       </a>
     </div>
 
@@ -70,7 +94,10 @@
   {# Column 3: Upcoming meetings #}
   <div class="card" style="display: flex; flex-direction: column;">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
-      <h2 class="card-title" style="font-size: 16px;">Upcoming meetings</h2>
+      <h2 class="card-title">
+        <span class="card-title-icon is-info" aria-hidden="true"><svg width="16" height="16"><use href="#icon-calendar"/></svg></span>
+        Upcoming meetings
+      </h2>
       <a href="/meetings/new" class="btn btn-primary btn-sm">+ New</a>
     </div>
 
@@ -95,7 +122,7 @@
       </div>
     {% else %}
       <div class="empty-state" style="flex: 1; padding: 32px 16px; text-align: center;">
-        <svg width="40" height="40" aria-hidden="true" style="stroke: var(--text-muted); stroke-width: 1.5; fill: none; margin-bottom: 8px;"><use href="#icon-calendar"/></svg>
+        <img src="/static/img/empty-calendar.svg" alt="" class="empty-illustration" width="132" height="99">
         <p class="text-sm text-muted">No meetings scheduled.</p>
         <a href="/meetings/new" class="btn btn-primary btn-sm">Schedule a meeting</a>
       </div>
@@ -106,16 +133,19 @@
 
 {# Recent Decisions Card #}
 <div class="card" style="margin-top: 24px;">
-  <div class="card-header" style="padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-    <h2 class="card-title" style="font-size: 16px;">Recent Decisions Across Meetings</h2>
+  <div class="card-header">
+    <h2 class="card-title">
+      <span class="card-title-icon" aria-hidden="true"><svg width="16" height="16"><use href="#icon-link"/></svg></span>
+      Recent Decisions Across Meetings
+    </h2>
   </div>
 
-  <div style="padding: 16px 20px;">
+  <div>
     {% if recent_decisions %}
       <div style="display: flex; flex-direction: column; gap: 12px;">
         {% for d in recent_decisions %}
           <div style="display: flex; gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid var(--border-subtle);">
-            <div style="color: var(--primary); font-size: 18px; line-height: 1;">&bull;</div>
+            <div style="flex-shrink: 0; width: 10px; height: 10px; margin-top: 7px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft);"></div>
             <div style="flex: 1;">
               <div style="font-weight: 500;">{{ d.text }}</div>
               <div class="text-xs text-muted" style="margin-top: 2px;">
